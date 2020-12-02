@@ -72,22 +72,27 @@ In doing some further research into the types of wetlands, you discover a few im
   
 ## 1C: Sulfur Isotope Fractionation in Shallow vs. Deep Groundwater
 
-Let's just say that the fractionation factor $\alpha$ for microbial sulfate reduction to sulfide is 0.4 per mil. 
+Let's just say that the fractionation factor $\alpha$ for microbial sulfate reduction to sulfide is 0.95 per mil. 
 $$
-\alpha_{HS^- / SO_4^{2-}} = \frac{\delta^{34}S_{HS^-} + 1}{\delta^{34}S_{SO_4^{2-}} + 1} = 0.4
+\alpha_{HS^- / SO_4^{2-}} = \frac{\delta^{34}S_{HS^-} + 1}{\delta^{34}S_{SO_4^{2-}} + 1} = 0.95
 $$
-We will also assume that sulfide in shallow groundwater has been reduced once, and sulfide in deep groundwater has been reduced, re-oxidized, and reduced again. Calculate the $\delta^{34}S$ value of both shallow and deep groundwater for each system.
+We can use this equation to estimate $\delta^{34}S$ values for shallow groundwater and deep groundwater.
+
+For shallow groundwater, let's assume that 25% of the sulfur is diffused sulfate in oxic pore spaces, and 75% is sulfide that has been reduced once by SRB.
+For deep groundwater, let's assume that 5% of the sulfur is diffused sulfate in oxic pore spaces, and 95% is sulfide that has been reduced by SRB in shallow groundwater, re-oxidized, and then reduced again. 
+
+In the chunk below, calculate the $\delta^{34}S$ value of both shallow and deep groundwater for each system.
 
 ```{r}
 d34S_precip <- 5.0
 
-d34S_awm_sgw <- (0.4 * (d34S_awm_surf + 1)) - 1
-d34S_psl_sgw <- (0.4 * (d34S_psl_surf + 1)) - 1
-d34S_saw_sgw <- (0.4 * (d34S_saw_surf + 1)) - 1
+d34S_awm_sgw <- (0.75 * ((0.95 * (d34S_awm_surf + 1)) - 1)) + 0.25 * d34S_awm_surf
+d34S_psl_sgw <- (0.75 * ((0.95 * (d34S_psl_surf + 1)) - 1)) + 0.25 * d34S_psl_surf
+d34S_saw_sgw <- (0.75 * ((0.95 * (d34S_saw_surf + 1)) - 1)) + 0.25 * d34S_saw_surf
 
-d34S_awm_dgw <- (0.4 * (d34S_awm_sgw + 1)) - 1
-d34S_psl_dgw <- (0.4 * (d34S_psl_sgw + 1)) - 1
-d34S_saw_dgw <- (0.4 * (d34S_saw_sgw + 1)) - 1
+d34S_awm_dgw <- (0.95 * ((0.95 * (d34S_awm_sgw + 1)) - 1)) + 0.05 * d34S_awm_surf
+d34S_psl_dgw <- (0.95 * ((0.95 * (d34S_psl_sgw + 1)) - 1)) + 0.05 * d34S_psl_surf
+d34S_saw_dgw <- (0.95 * ((0.95 * (d34S_saw_sgw + 1)) - 1)) + 0.05 * d34S_saw_surf
 ```
 
 ## 1D: Mini Mass Balance for Runoff
