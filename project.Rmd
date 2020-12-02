@@ -15,16 +15,16 @@ editor_options:
 
 This exercise will take some concepts discussed in Orem et al. (2011) and apply them to an alpine wetland ecosystem.
 
-Alpine wetlands are very fascinating systems. Although they may look different than the lowland wetlands you are used to, I hypothesize that they are key control points in the alpine ecosystem. You are working up at Niwot Ridge, sampling wetlands of 3 distinct types: alpine wet meadows (AWMs), subalpine wetlands (SAWs), and periglacial solifluction lobes(PSLs). You are interested in whether long-range transport of sulfur in aerosols through wet deposition is significantly raising the natural levels of sulfur in these systems. You remember the findings of Orem et al. (2011), who found that at low sulfate concentrations, you can track the source of sulfate in wetland surface water. 
+Alpine wetlands are very fascinating systems. Although they may look different than the lowland wetlands you are used to, I hypothesize that they are key control points in the alpine ecosystem. You are working up at Niwot Ridge, sampling wetlands of 3 distinct types: alpine wet meadows (AWMs), subalpine wetlands (SAWs), and periglacial solifluction lobes(PSLs). You are interested in whether long-range transport of sulfur in aerosols through wet deposition is significantly raising the natural levels of sulfur in these systems. You remember the findings of Orem et al. (2011), who found that at low sulfate concentrations, you can track the source of sulfate in wetland surface water. You are able to take some measurements, but still need to contruct idealized models of sulfur transportation and transformation in these wetlands.
 
 ```{r "load packages", include=FALSE, message=FALSE}
 library(tidyverse)
 library(ggplot2)
 ```
 
-# Part 1: Determining Sulfur Source
+# Part 1: Constructing the System
 
-You measure the following sulfate concentrations [mg/L] and $\delta^{34}S$ values [permil] in the surface water of each wetland type. 
+You measure the following sulfate concentrations [mg/L] and $\delta^{34}S$ values [permil] in the surface water of each wetland type. You also measure the isotopic composition of the precipitation to be +5.0 permil. Run the following chunk to examine your data. 
 ```{r}
 d34S_awm_surf <- 2.96
 d34S_psl_surf <- 5.01
@@ -33,8 +33,10 @@ conc_awm <- 3.4
 conc_psl <- 3.0
 conc_saw <- 6.2
 
+d34S_precip <- 5.0
+
 s_data <- tibble(
-  type = c("AWM", "PSL","SAW"),
+  wetland_type = c("AWM", "PSL","SAW"),
   concentration = c(conc_awm, conc_psl, conc_saw), #mg/L
   d34S = c(d34S_awm_surf, d34S_psl_surf, d34S_saw_surf), #permil
 )
@@ -42,13 +44,13 @@ s_data <- tibble(
 s_data
 ```
 
+## 1A: Identifying Sources
+
 Due to the dearth of information on sulfur isotopes in alpine wetlands, you turn to the wetland literature and find the following figure in Orem et al. (2011):
 
 ```{r}
 knitr::include_graphics("everglades.png")
 ```
-
-## 1A: Identifying Sources
 
 Looking at your wetlands, they don't receive any canal discharge, but there are runoff inputs flowing downslope, mostly from snowmelt. Therefore, your total mass balance equation for the isotopic composition of surface sulfate in each wetland becomes:
 
@@ -61,18 +63,17 @@ $$
 In doing some further research into the types of wetlands, you discover a few important pieces of information (let's call them Helpful Hints):
 1. PSLs have an underlying ice lens, effectively cutting them off from groundwater inputs
 2. SAWs lay downslope below treeline, so receive runoff from the AWM and PSL.
-3. All systems are close together, so will have the same total sulfate concentration input from precipitation.
-4. You measure the $\delta_{34}S$ of the precipitation to be +5 per mil. 
-5. Due to the depth of the water table, sulfate in deep groundwater takes a very long time to diffuse to the surface, and will only contribute 1% of the sulfate in the surface pool if not cut off.
+3. All systems are close together, so will have the same total sulfate input from precipitation.
+4. Due to the depth of the peat soil layer, sulfur species in deep groundwater take a very long time to diffuse to the surface, and will only contribute 1% of the sulfate in the surface pool if not cut off.
 
 ### Q: With the following information, which sources will likely be the primary contributors to each wetland type?
-  PSLs: precip
-  AWMs: precip + groundwater
-  SAWs: runoff + groundwater
+PSLs: precip
+AWMs: precip + groundwater
+SAWs: runoff + groundwater
   
-## 1C: Sulfur Isotope Fractionation in Shallow vs. Deep Groundwater
+## 1C: Estimating Sulfur Isotope Fractionation in Shallow vs. Deep Groundwater
 
-Let's just say that the fractionation factor $\alpha$ for microbial sulfate reduction to sulfide is 0.96. 
+You receive some magical hypothetical information from the literature, that the fractionation factor $\alpha$ for microbial sulfate reduction to sulfide is 0.96.  
 $$
 \alpha_{HS^- / SO_4^{2-}} = \frac{\delta^{34}S_{HS^-} + 1}{\delta^{34}S_{SO_4^{2-}} + 1} = 0.96
 $$
@@ -84,8 +85,6 @@ For deep groundwater, let's assume that 5% of the sulfur is diffused sulfate in 
 In the chunk below, calculate the $\delta^{34}S$ value of both shallow and deep groundwater for each system.
 
 ```{r}
-d34S_precip <- 5.0
-
 d34S_awm_sgw <- (0.65 * ((0.96 * (d34S_awm_surf/1000 + 1)) - 1) * 1000) + 0.35 * d34S_awm_surf
 d34S_psl_sgw <- (0.65 * ((0.96 * (d34S_psl_surf/1000 + 1)) - 1) * 1000) + 0.35 * d34S_psl_surf
 d34S_saw_sgw <- (0.65 * ((0.96 * (d34S_saw_surf/1000 + 1)) - 1) * 1000) + 0.35 * d34S_saw_surf
@@ -95,23 +94,24 @@ d34S_psl_dgw <- (0.95 * ((0.96 * (d34S_psl_sgw/1000 + 1)) - 1) * 1000) + 0.05 * 
 d34S_saw_dgw <- (0.95 * ((0.96 * (d34S_saw_sgw/1000 + 1)) - 1) * 1000) + 0.05 * d34S_saw_surf
 ```
 
-## 1D: Mini Mass Balance for Runoff
+## 1D: Mini Mass Balance to Estimate Isotopic Composition of Runoff
 
 Now to estimate the isotopic compositions of the runoff. 
-Runoff flowing into PSLs and AWMs is direct snowmelt. Only a small fraction of the snowmelt has been reduced and sequestered in the soil, leaving the runoff enriched wrt precipitation by +0.05 permil.
+
+Runoff flowing into PSLs and AWMs is direct snowmelt. Only a small fraction of the snowmelt has been reduced and sequestered in the soil during melting and transportation, leaving the runoff enriched wrt precipitation by +0.05 permil.
+
 Runoff going into the SAW is 10% snowmelt, 45% water that has drained from the AWM, and 45% water that has drained from the PSL.
+
 Calculate the isotopic compositions of runoff coming into each wetland type in the chunk below: 
 
 ```{r}
 d34S_awm_runoff <- d34S_precip + 0.05
 d34S_psl_runoff <- d34S_precip + 0.05
 d34S_saw_runoff <- 0.1 * d34S_precip + 0.45 * d34S_awm_surf + 0.45 * d34S_psl_surf
-
-d34S_saw_runoff
 ```
 
 
-Based on this information, you can fill out your table a bit further:
+Based on this information, you can fill out your table of information a bit further:
 
 ```{r}
 s_data <- s_data %>%
@@ -125,10 +125,10 @@ s_data <- s_data %>%
 s_data
 ```
   
-## 1D: Calculating the Contributions
+## 1E: Calculating the Fractional Contributions
 
 Yay you have all the delta values! Now we're going to determine the fractional contributions from each source.
-Determine the missing fractional contributions of sulfate from each potential source in the chunk below. Remember to look at the Helpful Hints!
+Determine the missing fractional contributions of sulfate from each potential source in the chunk below. HINTS: Look at the Helpful Hints! And maybe pull up Wolfram Alpha...
 
 ```{r}
 f_psl_runoff <- (d34S_psl_surf - d34S_precip)/(d34S_psl_runoff - d34S_precip)
@@ -156,7 +156,7 @@ f_saw_sgw
 ```
 
 
-## Visualize it:
+# Part 2: Visualize it!
 ```{r}
 awm <- data.frame(
   type = c(rep("AWM", 4), rep("PSL", 4), rep("SAW", 4)),
@@ -171,9 +171,11 @@ ggplot(awm, aes(x = "", y = value, group = source, color = source, fill = source
   theme_void()
 ```
 
-### Does this make sense, given the background information provided?
+### Q: Does this make sense, given the background information provided?
 
 Answer: Yes, because wetlands above treeline get most of their water from snowmelt, while the subalpine serves as a gateway for runoff draining into the greater watershed.
+
+# Part 3: Apply it!
 
 Orem et al. (2011) suggest implementation of a numeric water quality criteria to control sulfate loading for ecosystem protection. They suggest <1 mg/L sulfate, based on concentrations found in natural wetlands. Regardless of other sources of sulfate to Niwot wetlands, are the concentrations contributed by sulfur in wet deposition low enough to meet this standard? Remember that total sulfate concentration from precipitation should be the same in all 3 wetland types.
 
@@ -185,7 +187,7 @@ total_conc_saw <- f_saw_precip * conc_saw
 total_conc_awm
 ```
 
-What are some potential sources of sulfate in the wet deposition falling on Niwot Ridge?
+### Q: What are some potential sources of sulfate in the wet deposition falling on Niwot Ridge?
 
 Answer: Industrial activities in Denver, fossil fuel emissions, etc.
 
