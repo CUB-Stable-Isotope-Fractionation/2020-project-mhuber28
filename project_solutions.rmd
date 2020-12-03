@@ -18,7 +18,9 @@ This exercise will take some concepts discussed in Orem et al. (2011) and apply 
 Alpine wetlands are very fascinating systems. Although they may look different than the lowland wetlands you are used to, they may be key control points in the alpine ecosystem. You are working up at Niwot Ridge, sampling wetlands of 3 distinct types: alpine wet meadows (AWMs), subalpine wetlands (SAWs), and periglacial solifluction lobes(PSLs). You are interested in how much sulfur is entering these remote systems through wet deposition, both as a fractional contribution and total input. You remember the findings of Orem et al. (2011), who found that at low surface water sulfate concentrations, you can track the source of sulfate using stable isotope mass balance. You are able to take some measurements, but still need to contruct idealized models of sulfur transportation and transformation in these wetlands.
 
 ![Periglacial Solifluction Lobes](PSL.jpg)
+
 ![Alpine Wet Meadows](AWM.jpg)
+
 ![Subalpine Wetlands](SAW.jpg)
 
 ```{r "load packages", include=FALSE, message=FALSE}
@@ -160,6 +162,9 @@ f_saw_runoff
 f_saw_sgw
 ```
 
+$$ 
+f_{AWM,\space runoff} = \frac{-\delta_{AWM,\space surf} \space+ f_{AWM,\space dgw} \cdot \delta_{AWM,\space dgw} + f_{AWM,\space precip} \cdot \delta_{precip} + (1 - f_{AWM, \space dgw} - f_{AWM, \space precip}) \cdot \delta_{AWM, \space sgw}}{\delta_{AWM, \space sgw} - \delta_{AWM, \space runoff}}
+$$
 
 # Part 2: Visualize it!
 ```{r}
