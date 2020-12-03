@@ -156,6 +156,8 @@ f_saw_sgw <-
 
 
 # Part 2: Visualize it!
+
+Lets pull up some super-sophisticated pie charts to visualize these fractional contributions:
 ```{r}
 awm <- data.frame(
   type = c(rep("AWM", 4), rep("PSL", 4), rep("SAW", 4)),

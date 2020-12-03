@@ -167,6 +167,8 @@ f_{AWM,\space runoff} = \frac{-\delta_{AWM,\space surf} \space+ f_{AWM,\space dg
 $$
 
 # Part 2: Visualize it!
+
+Lets pull up some super-sophisticated pie charts to visualize these fractional contributions:
 ```{r}
 awm <- data.frame(
   type = c(rep("AWM", 4), rep("PSL", 4), rep("SAW", 4)),
