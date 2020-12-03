@@ -15,7 +15,11 @@ editor_options:
 
 This exercise will take some concepts discussed in Orem et al. (2011) and apply them to an alpine wetland ecosystem.
 
-Alpine wetlands are very fascinating systems. Although they may look different than the lowland wetlands you are used to, I hypothesize that they are key control points in the alpine ecosystem. You are working up at Niwot Ridge, sampling wetlands of 3 distinct types: alpine wet meadows (AWMs), subalpine wetlands (SAWs), and periglacial solifluction lobes(PSLs). You are interested in whether long-range transport of sulfur in aerosols through wet deposition is significantly raising the natural levels of sulfur in these systems. You remember the findings of Orem et al. (2011), who found that at low sulfate concentrations, you can track the source of sulfate in wetland surface water. You are able to take some measurements, but still need to contruct idealized models of sulfur transportation and transformation in these wetlands.
+Alpine wetlands are very fascinating systems. Although they may look different than the lowland wetlands you are used to, they may be key control points in the alpine ecosystem. You are working up at Niwot Ridge, sampling wetlands of 3 distinct types: alpine wet meadows (AWMs), subalpine wetlands (SAWs), and periglacial solifluction lobes(PSLs). You are interested in how much sulfur is entering these remote systems through wet deposition, both as a fractional contribution and total input. You remember the findings of Orem et al. (2011), who found that at low surface water sulfate concentrations, you can track the source of sulfate using stable isotope mass balance. You are able to take some measurements, but still need to contruct idealized models of sulfur transportation and transformation in these wetlands.
+
+![Periglacial Solifluction Lobes](PSL.jpg)
+![Alpine Wet Meadows](AWM.jpg)
+![Subalpine Wetlands](SAW.jpg)
 
 ```{r "load packages", include=FALSE, message=FALSE}
 library(tidyverse)
@@ -61,6 +65,7 @@ $$
 ## 1B: Some Helpful Information
 
 In doing some further research into the types of wetlands, you discover a few important pieces of information (let's call them Helpful Hints):
+
 1. PSLs have an underlying ice lens, effectively cutting them off from groundwater inputs
 2. SAWs lay downslope below treeline, so receive runoff from the AWM and PSL.
 3. All systems are close together, so will have the same total sulfate input from precipitation.
