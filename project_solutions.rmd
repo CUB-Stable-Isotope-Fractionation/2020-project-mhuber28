@@ -15,7 +15,7 @@ editor_options:
 
 This exercise will take some concepts discussed in Orem et al. (2011) and apply them to an alpine wetland ecosystem.
 
-Alpine wetlands are very fascinating systems. Although they may look different than the lowland wetlands you are used to, they may be key control points in the alpine ecosystem. You are working up at Niwot Ridge, sampling wetlands of 3 distinct types: alpine wet meadows (AWMs), subalpine wetlands (SAWs), and periglacial solifluction lobes(PSLs). You are interested in how much sulfur is entering these remote systems through wet deposition, both as a fractional contribution and total input. You remember the findings of Orem et al. (2011), who found that at low surface water sulfate concentrations, you can track the source of sulfate using stable isotope mass balance. You are able to take some measurements, but still need to contruct idealized models of sulfur transportation and transformation in these wetlands.
+Alpine wetlands are very fascinating systems. Although they look different than the lowland wetlands you are used to, they may be key control points in the alpine ecosystem. You are working up at Niwot Ridge, sampling wetlands of 3 distinct types: alpine wet meadows (AWMs), subalpine wetlands (SAWs), and periglacial solifluction lobes(PSLs). You are interested in how much sulfur is entering these remote systems through wet deposition, both as a fractional contribution and total input. You remember the findings of Orem et al. (2011), who found that at low surface water sulfate concentrations, you can track the source of sulfate using stable isotope mass balance. You are able to take some measurements, but still need to contruct idealized models of sulfur transportation and transformation in these wetlands.
 
 ![Periglacial Solifluction Lobes](PSL.jpg)
 
@@ -105,7 +105,7 @@ d34S_saw_dgw <- (0.95 * ((0.96 * (d34S_saw_sgw/1000 + 1)) - 1) * 1000) + 0.05 * 
 
 Now to estimate the isotopic compositions of the runoff. 
 
-Runoff flowing into PSLs and AWMs is direct snowmelt. Only a small fraction of the snowmelt has been reduced and sequestered in the soil during melting and transportation, leaving the runoff enriched wrt precipitation by +0.05 permil.
+Runoff flowing into PSLs and AWMs is direct snowmelt. A small fraction of the snowmelt has been reduced and sequestered in the soil during melting and transportation, leaving the runoff enriched wrt precipitation by +0.05 permil.
 
 Runoff going into the SAW is 10% snowmelt, 45% water that has drained from the AWM, and 45% water that has drained from the PSL.
 
@@ -201,5 +201,5 @@ total_conc_awm
 
 ### Q: What are some potential sources of sulfate in the wet deposition falling on Niwot Ridge?
 
-Answer: Industrial activities in Denver, fossil fuel emissions, etc.
+Answer: Long-range transport of S aerosols and S gases from industrial activities in Denver and other regions
 
